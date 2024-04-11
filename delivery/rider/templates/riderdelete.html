@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Darumadrop+One&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'riderr.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>Riders</h1>
+            <div class="header-rightSide">
+                <a href="" class="account"><img src="\media\media\icon.svg" alt="user icon"> Admin</a>
+            </div>
+        </header>
+        <div class="side-bar">
+            <div class="logo">
+                <img src="\media\media\logo.svg" alt="logo">
+                <div>
+                    <h1 class="daruma">My</h1>
+                    <h4 class="daruma">coffee shop</h4>
+                </div>
+            </div>
+            <ul>
+                <li class="sidebar-content"><a href=""><img src="\media\media\sidebar-icon1.svg" alt=""> Riders</a></li>
+                <li class="sidebar-content"><a href=""><img src="\media\media\sidebar-icon2.svg" alt=""> Dispatch</a></li>
+                <li class="sidebar-content"><a href="{% url 'dispatchcomplete' %}"><img src="..\media\media\sidebar-icon2.svg" alt=""> Complete Order</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="content-menu">
+                <div class="upper-menu">
+                        <div class="top-info info">
+        <h1>Delete Rider</h1>
+        <p> Are you sure you want to delete {{rider}}</p>
+
+        <form method="post" action="{%url 'riderdelete' rider.pk %} ">
+            {% csrf_token %}
+                <input type="submit" name="confirm">
+                <a href ="{%url 'riderhome'%}">Cancel</a>
+                
+        </form>

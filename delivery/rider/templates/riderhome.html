@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&family=Darumadrop+One&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'riders.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>Riders</h1>
+            <div class="header-rightSide">
+                <a href="" class="account"><img src="..\media\media\icon.svg" alt="user icon"> Admin</a>
+            </div>
+        </header>
+        <div class="side-bar">
+            <div class="logo">
+                <img src="..\media\media\logo.svg" alt="logo">
+                <div class="logo-text">
+                    <h1 class="Manrope">My</h1>
+                    <h4 class="Manrope">Coffee <span>shop</span></h4>
+                </div>
+            </div>
+            <ul class="sidebar-Maincontent">
+                <a href="{% url 'riderhome' %}" class="sidebar-btn"><li class="sidebar-content"><img src="..\media\media\sidebar-icon1.svg" alt="" class="sidebar-icon"> Riders</li></a>
+                <a href="{% url 'dispatchhome' %}" class="sidebar-btn"><li class="sidebar-content"><img src="..\media\media\side-barIcon2.svg" alt="" class="sidebar-icon"> Dispatch</li></a>
+                <a href="{% url 'dispatchcomplete' %}" class="sidebar-btn"><li class="sidebar-content"><img src="..\media\media\side-barIcon2.svg" alt="" class="sidebar-icon"> Complete Order</li></a>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="content-menu">
+                <div class="upper-menu">
+                    <div class="rider-info container-xl text-center row ">
+                        <div class="top-info info col top-rider">
+                            <span class="fs-3 fw-bold">Add rider</span>
+                        </div>
+                        
+                        <form method="post" action="{% url 'riderhome' %}" class="">
+                            <input type="hidden" name="form_type" value="riderhome">
+                            {% csrf_token %}
+
+
+                            <div class="main-info info container align-baseline">
+                                <div class="main-row row">
+                                    <div class="form-group col">
+                                        <label for="name" class="fw-bold">Name:</label>
+                                        <input type="text" id="name" name="name" class="input">
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="username" class="fw-bold">Username:</label>
+                                        <input type="text" id="username" name="username" class="input">
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="main-info info container text-center">
+                                <div class="main-row row">
+                                    <div class="form-group col">
+                                        <label for="password" class="fw-bold">Password:</label>
+                                        <input type="password" id="password" name="password" class="input">
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="contactnum" class="fw-bold">Number:</label>
+                                        <input type="text" id="contactnum" name="contactnum" class="input">
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="zone">
+                                <label for="contactnum" class="fw-bold">Location:</label>
+                                    {{form.location}}
+                            </div>
+                            <button type="submit" class="login_button">Save</button>
+                        </form>
+                    </div>
+                    <img src="../media/media/coffee.svg" class="coffee">
+                </div>
+                
+                <div class="lower-menu container">
+                    <div class="rider-table container-xl center-text">
+                        <div class="Rtable row">
+                            <div class="Rtable-title col">
+                                <span class="fs-3 fw-bold">Riders</span>
+                            </div>
+                            <div class="Rtable-search col">
+                                <button class="refresh"><img src="..\media\media\refresh.svg" alt="" class="menu-icons"></button>
+                                <div class="search">
+                                    <input type="text" placeholder="Search" class="search-input">
+                                    <img src="..\media\media\search.svg" alt="he" class="menu-icons search-icon">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-categories row">
+                            <ul class="menu-info menu">
+                                <li class="col">Rider ID</li>
+                                <li class="col">Name</li>
+                                <li class="col">Username</li>
+                                <li class="col">Phone</li>
+                                <li class="col">Zone</li>
+                                <li class="col">Availablity</li>
+                                <li class="col">Action</li>
+                            </ul>
+                        </div>
+                        <div class="menu-mainTable row">
+                            {% for rider in all_rider %}
+                            <ul class="menu-info menu">   
+                                <li class="col">RID-000{{rider.riderid}}</li>
+                                <li class="col">{{rider.name}}</li>
+                                <li class="col">{{rider.username}}</li>
+                                <li class="col">{{rider.contactnum}}</li>
+                                <li class="col">{{rider.location}}</li>
+
+                                <div class="avail col">
+                                    {%if rider.availability%}
+                                    <li>Available</li>
+                                    {%else%}    
+                                    <li>Unavailable</li>
+                                    {%endif%}
+                                </div>  
+                                
+
+
+                                <div class="action col">
+                                    <button class="option-btn"><img src="../media/media/option.svg" alt=""></button>
+                                    <div class="options">
+                                        <a rel="noopener" target="_blank" href="{% url 'rideredit' rider.pk %}" data-bs-toggle="modal" data-bs-target="#RiderEdit{{ rider.pk }}">Edit</a>
+                                        <a rel="noopener" target="_blank" href="{% url 'riderdelete' rider.pk %}" data-bs-toggle="modal" data-bs-target="#DeleteRider{{ rider.pk }}">Delete</a>
+                                    </div>
+                                    <div class="modal fade" id="RiderEdit{{ rider.pk }}" tabindex="-1" aria-labelledby="RiderEdit{{ rider.pk }}"aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h1 class="modal-title fs-3 fw-bold" id="RiderEdit{{ rider.pk }}">Edit Rider Detail</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"enctype="multipart/form-data"  action="{% url 'rideredit' rider.pk %}">
+                                                    
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="form_type" value="rideredit"> 
+                                                        <input type="hidden" name="pk" value="{{ rider.pk }}">
+                                                        <p class="modalText">{{riderid}} Details</p>
+                                                        {{ form.as_p }}
+                                                        <div class="Mbottom">
+                                                            <button type="submit" class="modal-btn">Save Changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="DeleteRider{{ rider.pk }}" tabindex="-1" aria-labelledby="DeleteRider{{ rider.pk }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h1 class="modal-title fs-3 fw-bold" id="DeleteRider{{ rider.pk }}">Delete Rider</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post"enctype="multipart/form-data"  action="{% url 'riderdelete' rider.pk %}">
+                                                    <p class="modalText"> Are you sure you want to delete {{rider}}?</p>
+                                                        {% csrf_token %}
+                                                        <div class="Mbottom">
+                                                            <div>
+                                                                <input type="submit" name="confirm" class="modal-btn">
+                                                            </div>
+                                                            <div>
+                                                                <a href ="{%url 'riderhome'%}" class="cancel-btn">Cancel</a> 
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="RiderEdit" tabindex="-1" aria-labelledby="RiderEdit" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h1 class="modal-title fs-3 fw-bold" id="RiderEdit">Edit Rider Detail</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="modalText">{{rider.username}} Details</p>
+                                                <form method="post"enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    {{ form.as_p }}
+                                                    <button type="submit">Save Changes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>        
+                                
+                            </ul>
+                            {% endfor %}
+                            
+                        </div>
+                        <div class="menu-footer menu row">
+                            <div class="menu-row menu col">
+                                <span>Rows per page:</span>
+                                <label for="page-rows"></label>
+                                <select name="page-rows" id="page-rows">
+                                    <option value="10">10</option>
+                                    <option value="9">9</option>
+                                    <option value="8">8</option>
+                                </select>
+                                
+                            </div>
+                            <div class="page-menu col">
+                                <span>1-2 of 2</span>
+                            </div>
+                            <div class="menuFooter-Btn menu col ">
+                                <button class="pageBtn"><img src="../media/media/pageBtn1.svg"></button>
+                                <button class="pageBtn"><img src="../media/media/pageBtn2.svg"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
